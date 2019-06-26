@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Soursop.GraphQL.Gen.Core.Tests.Assets
 {
-    public class PropertySelection: Selection<PropertySelection>, IPropertySelection
+    public class PropertySelection: Selection<IPropertySelection>, IPropertySelection
     {
         private readonly static Dictionary<string, string> _mapping;
 	
@@ -48,13 +48,6 @@ namespace Soursop.GraphQL.Gen.Core.Tests.Assets
         public CitySelection City { get; }
         public CountySelection County { get; }
 
-        public new PropertySelection Select(params Expression<Func<PropertySelection, object>>[] expressions)  => (PropertySelection)base.Select(expressions);
-
-        public PropertySelection SelectAll() 
-        {
-            SelectedProperties.Clear();
-            SelectedProperties.AddRange(_mapping.Values);
-            return this;
-        }
+        public new PropertySelection Select(params Expression<Func<IPropertySelection, object>>[] expressions)  => (PropertySelection) base.Select(expressions);
     }
 }

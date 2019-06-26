@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 
@@ -23,6 +24,8 @@ namespace Soursop.GraphQL.Gen
                 yield break;
             }	
         }
+
+        public IEnumerable<string> SelectedPropertyNames => SelectedProperties;
 	
         protected virtual string ArgumentList => "";
 
@@ -58,7 +61,15 @@ namespace Soursop.GraphQL.Gen
     }
 
     public abstract class Selection<TSelection>: Selection
-    {	
+    {
+        public Selection()
+        {
+            AllNames = new Lazy<string[]>(typeof(TSelection).GetProperties()
+                .Select(p => TryGetJsonPropertyName(p.Name, out var jsonName) ? jsonName : p.Name).ToArray());
+        }
+
+        protected Lazy<string[]> AllNames { get; }
+
         protected Selection<TSelection> Select(params Expression<Func<TSelection, object>>[] expressions)
         {
             foreach (var expression in expressions)
@@ -87,6 +98,13 @@ namespace Soursop.GraphQL.Gen
                 SelectedProperties.Add(name);
             }			
 		
+            return this;
+        }
+
+        public Selection<TSelection> SelectAll() 
+        {
+            SelectedProperties.Clear();
+            SelectedProperties.AddRange(AllNames.Value);
             return this;
         }
     }

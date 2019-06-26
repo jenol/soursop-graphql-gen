@@ -24,12 +24,5 @@ namespace Soursop.GraphQL.Gen.Core.Tests.Assets
         protected override bool TryGetJsonPropertyName(string name, out string jsonName) => _mapping.TryGetValue(name, out jsonName);
 
         public new AreaSelection Select(params Expression<Func<IAreaSelection, object>>[] expressions) => (AreaSelection)base.Select(expressions);
-
-        public AreaSelection SelectAll()
-        {
-            SelectedProperties.Clear();
-            SelectedProperties.AddRange(_mapping.Values);
-            return this;
-        }
     }
 }

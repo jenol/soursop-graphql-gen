@@ -38,12 +38,5 @@ namespace Soursop.GraphQL.Gen.Core.Tests.Assets
         protected override bool TryGetJsonPropertyName(string name, out string jsonName) => _mapping.TryGetValue(name, out jsonName);
 	
         public new CitySelection Select(params Expression<Func<ICitySelection, object>>[] expressions)  => (CitySelection)base.Select(expressions);
-
-        public CitySelection SelectAll()
-        {
-            SelectedProperties.Clear();
-            SelectedProperties.AddRange(_mapping.Values);
-            return this;
-        }
     }
 }

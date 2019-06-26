@@ -24,12 +24,5 @@ namespace Soursop.GraphQL.Gen.Core.Tests.Assets
         protected override bool TryGetJsonPropertyName(string name, out string jsonName) => _mapping.TryGetValue(name, out jsonName);
 	
         public new CountySelection Select(params Expression<Func<ICountySelection, object>>[] expressions)  => (CountySelection)base.Select(expressions);
-
-        public CountySelection SelectAll()
-        {
-            SelectedProperties.Clear();
-            SelectedProperties.AddRange(_mapping.Values);
-            return this;
-        }
     }
 }
