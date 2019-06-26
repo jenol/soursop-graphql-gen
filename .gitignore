@@ -1,0 +1,5 @@
+/.vs
+/src/Soursop.GraphQL.Gen.Core/obj
+/src/Soursop.GraphQL.Gen.Core/bin
+/src/Soursop.GraphQL.Gen.Core.Tests/bin
+/src/Soursop.GraphQL.Gen.Core.Tests/obj
