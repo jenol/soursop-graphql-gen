@@ -21,9 +21,6 @@ namespace Soursop.GraphQL.Gen.Core.Tests.Assets
             Areas = new AreaSelection();
         }
 
-        public int Id { get; internal set;}
-        public string Name { get; internal set; }
-
         protected override IEnumerable<Selection> SubSelections
         {
             get
@@ -35,6 +32,11 @@ namespace Soursop.GraphQL.Gen.Core.Tests.Assets
         public AreaSelection Areas { get; }
 	
         protected override string SelectionName => "City";
+
+        int ICitySelection.Id  { get; }
+
+        string ICitySelection.Name  { get; }
+
         protected override bool TryGetJsonPropertyName(string name, out string jsonName) => _mapping.TryGetValue(name, out jsonName);
 	
         public new CitySelection Select(params Expression<Func<ICitySelection, object>>[] expressions)  => (CitySelection)base.Select(expressions);

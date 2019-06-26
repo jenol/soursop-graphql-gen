@@ -29,7 +29,7 @@ namespace Soursop.GraphQL.Gen
 	
         protected virtual string ArgumentList => "";
 
-        public string ToGraphQL() 
+        internal string ToGraphQL() 
         {
             var builder = new StringBuilder();
 

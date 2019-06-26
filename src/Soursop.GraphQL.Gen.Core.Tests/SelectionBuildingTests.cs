@@ -2,6 +2,7 @@
 using System.Linq;
 using NUnit.Framework;
 using Shouldly;
+using Soursop.GraphQL.Gen.Core.Introspection;
 using Soursop.GraphQL.Gen.Core.Tests.Assets;
 
 namespace Soursop.GraphQL.Gen.Core.Tests
@@ -63,6 +64,7 @@ namespace Soursop.GraphQL.Gen.Core.Tests
         [Test]
         public void ToGraphQLResultTests()
         {
+            
             var builder = new PropertyQueryBuilder();
 
             var propertySelection = builder.Property;
@@ -77,11 +79,19 @@ namespace Soursop.GraphQL.Gen.Core.Tests
 
             propertySelection.City.Select(v => v.Name).Areas.SelectAll();
 
-            var gql = builder.ToGraphQL();
-            gql.ShouldNotBeNullOrEmpty();
+            var gqle = builder.ToGraphQL();
+            gqle.ShouldNotBeNullOrEmpty();
 
             // builder.Build(1).GetJsonRequest().Dump();	
-            // builder.Build(2).GetJsonRequest().Dump();
+            // builder.Build(2).GetJsonRequest().Dump(); 
+
+            var b = new TypeQueryBuilder();
+
+            b.Type.Select(t => t.Name, t => t.Description);
+            
+
+            var gql = b.ToGraphQL();
+            gql.ShouldNotBeNullOrEmpty();
         }
 
     }

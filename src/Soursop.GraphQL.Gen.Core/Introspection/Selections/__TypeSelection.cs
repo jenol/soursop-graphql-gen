@@ -1,33 +1,42 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using System.Text;
 
 namespace Soursop.GraphQL.Gen.Core.Introspection.Selections
 {
     public interface __ITypeSelection
     {
-        object Kind { get; set; }
-        string Name { get; set; }
-        string Description { get; set; }
-        object Fields { get; set; }
-        object InputFields { get; set; }
-        object OfType { get; set; }
+        object Kind { get; }
+        string Name { get; }
+        string Description { get; }
+        object Fields { get; }
+        object InputFields { get; }
+        object OfType { get; }
     }
 
     public class __TypeSelection: Selection<__ITypeSelection>, __ITypeSelection
     {
-        public object Kind { get; set; }
-        public string Name { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public string Description { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public object Fields { get; set; }
-        public object InputFields { get; set; }
-        public object OfType { get; set; }
+        protected override string SelectionName => "__type";
 
-        protected override string SelectionName => "__Type";
+        object __ITypeSelection.Kind  { get; }
+
+        string __ITypeSelection.Name  { get; }
+
+        string __ITypeSelection.Description { get; }
+
+        object __ITypeSelection.Fields { get; }
+
+        object __ITypeSelection.InputFields  { get; }
+
+        object __ITypeSelection.OfType  { get; }
+
+        public new __TypeSelection Select(params Expression<Func<__ITypeSelection, object>>[] expressions)  => (__TypeSelection)base.Select(expressions);
 
         protected override bool TryGetJsonPropertyName(string name, out string jsonName)
         {
-            throw new NotImplementedException();
+            jsonName = "";
+            return false;
         }
     }
 }

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
-using System.Text;
 
 namespace Soursop.GraphQL.Gen.Core.Tests.Assets
 {
@@ -17,10 +16,12 @@ namespace Soursop.GraphQL.Gen.Core.Tests.Assets
             };
         }
 
-        public int Id { get; internal set; }
-        public string Name { get; internal set; }
-
         protected override string SelectionName => "Areas";
+
+        int IAreaSelection.Id  { get; }
+
+        string IAreaSelection.Name  { get; }
+
         protected override bool TryGetJsonPropertyName(string name, out string jsonName) => _mapping.TryGetValue(name, out jsonName);
 
         public new AreaSelection Select(params Expression<Func<IAreaSelection, object>>[] expressions) => (AreaSelection)base.Select(expressions);

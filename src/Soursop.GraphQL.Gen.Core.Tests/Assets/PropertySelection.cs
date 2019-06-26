@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
-using System.Text;
 
 namespace Soursop.GraphQL.Gen.Core.Tests.Assets
 {
@@ -38,15 +37,15 @@ namespace Soursop.GraphQL.Gen.Core.Tests.Assets
                 yield return County;	
             }
         }
-
-        public int Id { get; internal set; }
-        public string Name { get; internal set; }
-        public string FormerName { get; internal set; }
-        public int ChainId { get; internal set; }
-        public float StarRating { get; internal set; }
 	
         public CitySelection City { get; }
         public CountySelection County { get; }
+
+        int IPropertySelection.Id { get; }
+        string IPropertySelection.Name  { get; }
+        string IPropertySelection.FormerName  { get; }
+        int IPropertySelection.ChainId  { get; }
+        float IPropertySelection.StarRating  { get; }
 
         public new PropertySelection Select(params Expression<Func<IPropertySelection, object>>[] expressions)  => (PropertySelection) base.Select(expressions);
     }

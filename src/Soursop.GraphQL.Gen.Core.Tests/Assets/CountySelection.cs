@@ -16,11 +16,13 @@ namespace Soursop.GraphQL.Gen.Core.Tests.Assets
                 { "Name", "name" },			
             };
         }
-
-        public int Id { get; internal set; }
-        public string Name { get; internal set; }
 	
-        protected override string SelectionName => "County";	
+        protected override string SelectionName => "County";
+
+        int ICountySelection.Id { get; }
+
+        string ICountySelection.Name  { get; }
+
         protected override bool TryGetJsonPropertyName(string name, out string jsonName) => _mapping.TryGetValue(name, out jsonName);
 	
         public new CountySelection Select(params Expression<Func<ICountySelection, object>>[] expressions)  => (CountySelection)base.Select(expressions);

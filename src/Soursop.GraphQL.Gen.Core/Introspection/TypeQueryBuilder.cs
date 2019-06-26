@@ -1,9 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using Soursop.GraphQL.Gen.Core.Introspection.Selections;
 
 namespace Soursop.GraphQL.Gen.Core.Introspection
 {
-    public class TypeQueryBuilder : IOperationBuilder<TypeQuery>
+    public class TypeQueryBuilder : OperationBuilderBase<TypeQuery>
     {
         public TypeQueryBuilder()
         {
@@ -13,9 +14,14 @@ namespace Soursop.GraphQL.Gen.Core.Introspection
         public __TypeSelection Type { get; }
 
 
-        public string ToGraphQL()
+        protected override IEnumerable<Selection> Selections
         {
-            throw new NotImplementedException();
+            get { yield return Type; }
+        }
+
+        protected override IEnumerable<InputValue> Variables 
+        {
+            get { yield return new InputValue{ Name = "name", TypeName = "Int!" }; }
         }
     }
 }
