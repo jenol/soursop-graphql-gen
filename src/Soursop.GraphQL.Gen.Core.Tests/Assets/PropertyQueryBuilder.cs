@@ -1,10 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Text;
 
 namespace Soursop.GraphQL.Gen.Core.Tests.Assets
 {
-    public class PropertyQueryBuilder: IOperationBuilder<PropertyQuery>
+    public class PropertyQueryBuilder: OperationBuilderBase<PropertyQuery>
     {
         public PropertyQueryBuilder() 
         {		
@@ -13,18 +12,19 @@ namespace Soursop.GraphQL.Gen.Core.Tests.Assets
 	
         public PropertySelection Property { get;}
 
-        public string ToGraphQL() 
-        {
-            var builder = new StringBuilder();
-            builder.AppendLine("query ($propertyId: Int!) { ");		
-            builder.Append(Property.ToGraphQL());		
-            builder.AppendLine("}");		
-            return builder.ToString();
-        }
-
         public PropertyQuery Build(int propertyId) 
         {
             return new PropertyQuery(ToGraphQL(), propertyId);
+        }
+
+        protected override IEnumerable<InputValue> Variables
+        {
+            get { yield return new InputValue {Name = "propertyId", TypeName = "Int!" }; }
+        }
+
+        protected override IEnumerable<Selection> Selections
+        {
+            get { yield return Property; }
         }
     }
 }

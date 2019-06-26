@@ -1,33 +1,25 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System.Collections.Generic;
 
 namespace Soursop.GraphQL.Gen.Core.Tests.Assets
 {
-    public class PropertyQuery: IOperation
+    public class PropertyQuery: OperationBase
     {
-        private readonly Lazy<string> _graphQL;
-	
-        internal PropertyQuery(string graphQL, int propertyId)
+        internal PropertyQuery(string graphQL, int propertyId) : base(graphQL)
         {
-            _graphQL = new Lazy<string>(() => graphQL);
             PropertyId = propertyId;
         }
+
+        public PropertyQuery(IOperationBuilder<PropertyQuery> builder, int propertyId) : base(builder)
+        {
+            PropertyId = propertyId;
+        }	
 	
         public int PropertyId { get; }
 
-        public PropertyQuery(IOperationBuilder<PropertyQuery> builder, int propertyId) 
-        {
-            _graphQL = new Lazy<string>(() => builder.ToGraphQL());
-            PropertyId = propertyId;
-        }	
 
-        public string GetJsonRequest()
+        public override IEnumerable<InputValue> Variables
         {
-            return JsonConvert.SerializeObject(new
-            {
-                query = _graphQL.Value,
-                variables = new { propertyId = PropertyId}
-            });
+            get { yield return new InputValue {Name = "propertyId", TypeName = "Int!", Value = PropertyId}; }
         }
     }
 }

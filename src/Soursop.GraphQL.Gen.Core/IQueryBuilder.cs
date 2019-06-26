@@ -1,7 +1,11 @@
 ﻿namespace Soursop.GraphQL.Gen.Core
 {
-    public interface IOperationBuilder<T> where T : IOperation
+    public interface IOperationBuilder 
     {
         string ToGraphQL();
+    }
+
+    public interface IOperationBuilder<T>: IOperationBuilder where T : IOperation 
+    {
     }
 }
