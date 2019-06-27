@@ -72,7 +72,7 @@ namespace Soursop.GraphQL.Gen
         }
     }
 
-    public abstract class Selector<TModel, TSelection>: Selector
+    public abstract class Selector<TModel, TSelector>: Selector
     {
         private static readonly Dictionary<string, string> _propertyNamesLookup;
 
@@ -100,7 +100,7 @@ namespace Soursop.GraphQL.Gen
             return _propertyNamesLookup.TryGetValue(name, out jsonName);
         }
 
-        protected Selector<TModel, TSelection> Select(params Expression<Func<TSelection, object>>[] expressions)
+        protected Selector<TModel, TSelector> Select(params Expression<Func<TSelector, object>>[] expressions)
         {
             foreach (var expression in expressions)
             {
@@ -118,6 +118,7 @@ namespace Soursop.GraphQL.Gen
                 }		
 			
                 string name = null;
+
                 if (!TryGetJsonPropertyName(member.Name, out name))
                 {
                     name = member.Name;
@@ -134,13 +135,13 @@ namespace Soursop.GraphQL.Gen
             return this;
         }
 
-        public Selector<TModel, TSelection> SelectAll() 
+        public Selector<TModel, TSelector> SelectAll() 
         {
             Clear().SelectedProperties.AddRange(_propertyNamesLookup.Values);
             return this;
         }
 
-        public Selector<TModel, TSelection> Clear() 
+        public Selector<TModel, TSelector> Clear() 
         {
             SelectedProperties.Clear();
             return this;
