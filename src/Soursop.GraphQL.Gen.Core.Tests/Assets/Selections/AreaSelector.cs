@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq.Expressions;
 using Soursop.GraphQL.Gen.Core.Tests.Assets.Models;
 
@@ -9,9 +8,9 @@ namespace Soursop.GraphQL.Gen.Core.Tests.Assets.Selections
     {
         protected override string SelectionName => "Areas";
 
-        int IAreaSelection.Id  { get; }
+        Selection<int> IAreaSelection.Id { get; }
 
-        string IAreaSelection.Name  { get; }
+        Selection<string> IAreaSelection.Name { get; }
 
         public new AreaSelector Select(params Expression<Func<IAreaSelection, object>>[] expressions) => (AreaSelector)base.Select(expressions);
     }

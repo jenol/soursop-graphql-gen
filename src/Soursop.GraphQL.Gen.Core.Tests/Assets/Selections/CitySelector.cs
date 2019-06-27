@@ -15,9 +15,9 @@ namespace Soursop.GraphQL.Gen.Core.Tests.Assets.Selections
 	
         protected override string SelectionName => "City";
 
-        int ICitySelection.Id  { get; }
+        Selection<int> ICitySelection.Id  { get; }
 
-        string ICitySelection.Name  { get; }
+        Selection<string> ICitySelection.Name  { get; }
 	
         public new CitySelector Select(params Expression<Func<ICitySelection, object>>[] expressions)  => (CitySelector)base.Select(expressions);
     }

@@ -20,11 +20,11 @@ namespace Soursop.GraphQL.Gen.Core.Tests.Assets
         public CitySelector Cities { get; }
         public CountySelector Countries { get; }
 
-        int IPropertySelection.Id { get; }
-        string IPropertySelection.Name  { get; }
-        string IPropertySelection.FormerName  { get; }
-        int IPropertySelection.ChainId  { get; }
-        float IPropertySelection.StarRating  { get; }
+        Selection<int> IPropertySelection.Id { get; }
+        Selection<string> IPropertySelection.Name  { get; }
+        Selection<string> IPropertySelection.FormerName  { get; }
+        Selection<int> IPropertySelection.ChainId  { get; }
+        Selection<float> IPropertySelection.StarRating  { get; }
 
         public new PropertySelector Select(params Expression<Func<IPropertySelection, object>>[] expressions)  => (PropertySelector) base.Select(expressions);
     }

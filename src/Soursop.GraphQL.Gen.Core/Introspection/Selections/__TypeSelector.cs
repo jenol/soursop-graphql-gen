@@ -6,11 +6,11 @@ namespace Soursop.GraphQL.Gen.Core.Introspection.Selections
 {
     public interface __ITypeSelection
     {
-        object Kind { get; }
-        string Name { get; }
-        string Description { get; }
-        object InputFields { get; }
-        object OfType { get; }
+        Selection Kind { get; }
+        Selection Name { get; }
+        Selection Description { get; }
+        Selection InputFields { get; }
+        Selection OfType { get; }
     }
 
     public class __TypeSelector: Selector<__Type, __ITypeSelection>, __ITypeSelection
@@ -22,15 +22,15 @@ namespace Soursop.GraphQL.Gen.Core.Introspection.Selections
 
         protected override string SelectionName => "__type";
 
-        object __ITypeSelection.Kind  { get; }
+        Selection __ITypeSelection.Kind  { get; }
 
-        string __ITypeSelection.Name  { get; }
+        Selection __ITypeSelection.Name  { get; }
 
-        string __ITypeSelection.Description { get; }
+        Selection __ITypeSelection.Description { get; }
 
-        object __ITypeSelection.InputFields  { get; }
+        Selection __ITypeSelection.InputFields  { get; }
 
-        object __ITypeSelection.OfType  { get; }
+        Selection __ITypeSelection.OfType  { get; }
 
         protected override string ArgumentList => "name: $name";
 

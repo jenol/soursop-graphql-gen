@@ -6,7 +6,7 @@ namespace Soursop.GraphQL.Gen.Core.Introspection.Selections
 {
     public interface __IFieldsSelection
     {
-        string Name { get; }
+        Selection Name { get; }
     }
 
 
@@ -14,7 +14,7 @@ namespace Soursop.GraphQL.Gen.Core.Introspection.Selections
     {
         protected override string SelectionName => "fields";
 
-        string __IFieldsSelection.Name { get; }
+        Selection __IFieldsSelection.Name { get; }
 
         public new __FieldsSelector Select(params Expression<Func<__IFieldsSelection, object>>[] expressions)  => (__FieldsSelector)base.Select(expressions);
     }

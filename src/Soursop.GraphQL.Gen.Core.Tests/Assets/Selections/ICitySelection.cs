@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Soursop.GraphQL.Gen.Core.Tests.Assets.Selections
+﻿namespace Soursop.GraphQL.Gen.Core.Tests.Assets.Selections
 {
     public interface ICitySelection
     {
-        int Id { get; }
-        string Name { get; }
+        Selection<int> Id { get; }
+        Selection<string> Name { get; }
     }
 
 }

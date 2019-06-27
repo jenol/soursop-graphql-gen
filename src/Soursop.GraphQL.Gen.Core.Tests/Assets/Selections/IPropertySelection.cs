@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Soursop.GraphQL.Gen.Core.Tests.Assets.Selections
+﻿namespace Soursop.GraphQL.Gen.Core.Tests.Assets.Selections
 {
     public interface IPropertySelection
     {
-        int Id { get; }
-        string Name { get; }
-        string FormerName { get;}
-        int ChainId { get; }
-        float StarRating { get; }
+        Selection<int> Id { get; }
+        Selection<string> Name { get; }
+        Selection<string> FormerName { get; }
+        Selection<int> ChainId { get; }
+        Selection<float> StarRating { get; }
     }
 }

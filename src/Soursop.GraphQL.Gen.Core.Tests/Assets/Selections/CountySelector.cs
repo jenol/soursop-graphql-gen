@@ -9,9 +9,9 @@ namespace Soursop.GraphQL.Gen.Core.Tests.Assets.Selections
     {
         protected override string SelectionName => "County";
 
-        int ICountySelection.Id { get; }
+        Selection<int> ICountySelection.Id { get; }
 
-        string ICountySelection.Name  { get; }
+        Selection<string> ICountySelection.Name  { get; }
 	
         public new CountySelector Select(params Expression<Func<ICountySelection, object>>[] expressions)  => (CountySelector)base.Select(expressions);
     }
