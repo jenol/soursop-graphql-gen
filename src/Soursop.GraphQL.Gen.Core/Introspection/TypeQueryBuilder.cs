@@ -8,20 +8,20 @@ namespace Soursop.GraphQL.Gen.Core.Introspection
     {
         public TypeQueryBuilder()
         {
-            Type = new __TypeSelection();
+            Type = new __TypeSelector();
         }
 
-        public __TypeSelection Type { get; }
+        public __TypeSelector Type { get; }
 
 
-        protected override IEnumerable<Selection> Selections
+        protected override IEnumerable<Selector> Selections
         {
             get { yield return Type; }
         }
 
         protected override IEnumerable<InputValue> Variables 
         {
-            get { yield return new InputValue{ Name = "name", TypeName = "Int!" }; }
+            get { yield return new InputValue{ Name = "name", TypeName = "String!" }; }
         }
     }
 }

@@ -4,14 +4,15 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Text;
+using Newtonsoft.Json;
 
 namespace Soursop.GraphQL.Gen
 {
-    public abstract class Selection
+    public abstract class Selector
     {
-        private IEnumerable<Selection> _subSelections;
+        private IEnumerable<Selector> _subSelections;
 
-        protected Selection() 
+        protected Selector() 
         {
             SelectedProperties = new List<string>();
         }
@@ -20,15 +21,15 @@ namespace Soursop.GraphQL.Gen
         protected abstract string SelectionName { get; }
         protected abstract bool TryGetJsonPropertyName(string name, out string jsonName);
 	
-        protected IEnumerable<Selection> SubSelections
+        protected virtual IEnumerable<Selector> SubSelections
         {
             get
             {
                 if (_subSelections == null)
                 {
                     _subSelections = GetType().GetProperties()
-                        .Where(p => typeof(Selection).IsAssignableFrom(p.PropertyType))
-                        .Select(p => p.GetGetMethod().Invoke(this, BindingFlags.Instance, null, null, null) as Selection)
+                        .Where(p => typeof(Selector).IsAssignableFrom(p.PropertyType))
+                        .Select(p => p.GetGetMethod().Invoke(this, BindingFlags.Instance, null, null, null) as Selector)
                         .Where(s => s != null);
                 }
 
@@ -71,17 +72,35 @@ namespace Soursop.GraphQL.Gen
         }
     }
 
-    public abstract class Selection<TSelection>: Selection
+    public abstract class Selector<TModel, TSelection>: Selector
     {
-        public Selection()
+        private static readonly Dictionary<string, string> _propertyNamesLookup;
+
+        static Selector()
         {
-            AllNames = new Lazy<string[]>(typeof(TSelection).GetProperties()
-                .Select(p => TryGetJsonPropertyName(p.Name, out var jsonName) ? jsonName : p.Name).ToArray());
+            var properties = typeof(TModel).GetProperties(BindingFlags.Instance | BindingFlags.Public).ToArray();
+            _propertyNamesLookup = properties
+                .ToDictionary(p => p.Name, p => GetJsonName(p));
         }
 
-        protected Lazy<string[]> AllNames { get; }
+        private static string GetJsonName(PropertyInfo propertyInfo)
+        {
+            var jsonPropertyAttribute = propertyInfo.GetCustomAttribute<JsonPropertyAttribute>();
 
-        protected Selection<TSelection> Select(params Expression<Func<TSelection, object>>[] expressions)
+            if (jsonPropertyAttribute == null)
+            {
+                return propertyInfo.Name;
+            }
+
+            return jsonPropertyAttribute.PropertyName;
+        }
+
+        protected sealed override bool TryGetJsonPropertyName(string name, out string jsonName)
+        {
+            return _propertyNamesLookup.TryGetValue(name, out jsonName);
+        }
+
+        protected Selector<TModel, TSelection> Select(params Expression<Func<TSelection, object>>[] expressions)
         {
             foreach (var expression in expressions)
             {
@@ -115,10 +134,15 @@ namespace Soursop.GraphQL.Gen
             return this;
         }
 
-        public Selection<TSelection> SelectAll() 
+        public Selector<TModel, TSelection> SelectAll() 
+        {
+            Clear().SelectedProperties.AddRange(_propertyNamesLookup.Values);
+            return this;
+        }
+
+        public Selector<TModel, TSelection> Clear() 
         {
             SelectedProperties.Clear();
-            SelectedProperties.AddRange(AllNames.Value);
             return this;
         }
     }

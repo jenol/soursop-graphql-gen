@@ -15,7 +15,7 @@ namespace Soursop.GraphQL.Gen.Core
 
             if (Variables != null && Variables.Any())
             {
-                variablesText = $"({string.Join(" ,", Variables.Select(v => $"${v.Name} {v.TypeName}"))})";
+                variablesText = $"({string.Join(" ,", Variables.Select(v => $"${v.Name}: {v.TypeName}"))})";
             }
 
             builder.AppendLine($"query {variablesText} {{ ");
@@ -29,7 +29,7 @@ namespace Soursop.GraphQL.Gen.Core
             return builder.ToString();
         }
 
-        protected abstract IEnumerable<Selection> Selections { get; }
+        protected abstract IEnumerable<Selector> Selections { get; }
         protected abstract IEnumerable<InputValue> Variables { get; }
     }
 }

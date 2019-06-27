@@ -7,10 +7,10 @@ namespace Soursop.GraphQL.Gen.Core.Tests.Assets
     {
         public PropertyQueryBuilder() 
         {		
-            Property = new PropertySelection();	
+            Property = new PropertySelector();	
         }	
 	
-        public PropertySelection Property { get;}
+        public PropertySelector Property { get;}
 
         public PropertyQuery Build(int propertyId) 
         {
@@ -22,7 +22,7 @@ namespace Soursop.GraphQL.Gen.Core.Tests.Assets
             get { yield return new InputValue {Name = "propertyId", TypeName = "Int!" }; }
         }
 
-        protected override IEnumerable<Selection> Selections
+        protected override IEnumerable<Selector> Selections
         {
             get { yield return Property; }
         }

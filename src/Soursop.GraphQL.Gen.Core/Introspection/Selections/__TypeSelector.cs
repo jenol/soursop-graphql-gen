@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq.Expressions;
+using Soursop.GraphQL.Gen.Core.Introspection.Models;
 
 namespace Soursop.GraphQL.Gen.Core.Introspection.Selections
 {
@@ -8,13 +9,17 @@ namespace Soursop.GraphQL.Gen.Core.Introspection.Selections
         object Kind { get; }
         string Name { get; }
         string Description { get; }
-        object Fields { get; }
         object InputFields { get; }
         object OfType { get; }
     }
 
-    public class __TypeSelection: Selection<__ITypeSelection>, __ITypeSelection
+    public class __TypeSelector: Selector<__Type, __ITypeSelection>, __ITypeSelection
     {
+        public __TypeSelector()
+        {
+            Fields = new __FieldsSelector();
+        }
+
         protected override string SelectionName => "__type";
 
         object __ITypeSelection.Kind  { get; }
@@ -23,18 +28,14 @@ namespace Soursop.GraphQL.Gen.Core.Introspection.Selections
 
         string __ITypeSelection.Description { get; }
 
-        object __ITypeSelection.Fields { get; }
-
         object __ITypeSelection.InputFields  { get; }
 
         object __ITypeSelection.OfType  { get; }
 
-        public new __TypeSelection Select(params Expression<Func<__ITypeSelection, object>>[] expressions)  => (__TypeSelection)base.Select(expressions);
+        protected override string ArgumentList => "name: $name";
 
-        protected override bool TryGetJsonPropertyName(string name, out string jsonName)
-        {
-            jsonName = "";
-            return false;
-        }
+        public __FieldsSelector Fields { get; internal set; }
+
+        public new __TypeSelector Select(params Expression<Func<__ITypeSelection, object>>[] expressions)  => (__TypeSelector)base.Select(expressions);
     }
 }

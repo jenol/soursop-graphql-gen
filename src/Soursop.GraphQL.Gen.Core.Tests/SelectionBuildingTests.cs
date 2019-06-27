@@ -12,11 +12,11 @@ namespace Soursop.GraphQL.Gen.Core.Tests
     public class SelectionBuildingTests
     {
         [Test, TestCaseSource(nameof(GetSelectionTestCases))]
-        public void SelectionTests(string description, Selection selection, string[] expectedPropertyNames)
+        public void SelectionTests(string description, Selector selector, string[] expectedPropertyNames)
         {
-            selection.SelectedPropertyNames.Count().ShouldBe(expectedPropertyNames.Length);
+            selector.SelectedPropertyNames.Count().ShouldBe(expectedPropertyNames.Length);
 
-            var selectedNames = selection.SelectedPropertyNames.ToArray();
+            var selectedNames = selector.SelectedPropertyNames.ToArray();
             for (int i = 0; i < selectedNames.Length; i++)
             {
                 selectedNames[i].ShouldBe(expectedPropertyNames[i]);
@@ -25,16 +25,16 @@ namespace Soursop.GraphQL.Gen.Core.Tests
 
         public static IEnumerable<object[]> GetSelectionTestCases()
         {
-            object[] GetTestCase(string description, Selection selection, params string[] expectedPropertyNames)
+            object[] GetTestCase(string description, Selector selection, params string[] expectedPropertyNames)
             {
                 return new object[] {description, selection, expectedPropertyNames};
             }
 
-            yield return GetTestCase("empty", new PropertySelection());
+            yield return GetTestCase("empty", new PropertySelector());
 
-            yield return GetTestCase("property #1", new PropertySelection().Select(p => p.Id), "id");
+            yield return GetTestCase("property #1", new PropertySelector().Select(p => p.Id), "id");
 
-            yield return GetTestCase("property #2", new PropertySelection().Select(
+            yield return GetTestCase("property #2", new PropertySelector().Select(
                     p => p.FormerName,
                     p => p.ChainId,
                     p => p.Name),
@@ -42,7 +42,7 @@ namespace Soursop.GraphQL.Gen.Core.Tests
                 "chainId",
                 "name");
 
-            yield return GetTestCase("property #3", new PropertySelection().Select(
+            yield return GetTestCase("property #3", new PropertySelector().Select(
                     p => p.FormerName,
                     p => p.ChainId,
                     p => p.Name,
@@ -51,13 +51,13 @@ namespace Soursop.GraphQL.Gen.Core.Tests
                 "chainId",
                 "name");
 
-            yield return GetTestCase("property #4", new CountySelection().Select(
+            yield return GetTestCase("property #4", new CountySelector().Select(
                     p => p.Id,
                     p => p.Name),
                 "id",
                 "name");
 
-            yield return GetTestCase("property #5", new CountySelection().SelectAll(),
+            yield return GetTestCase("property #5", new CountySelector().SelectAll(),
                 "id",
                 "name");
         }
@@ -74,11 +74,11 @@ namespace Soursop.GraphQL.Gen.Core.Tests
                     p => p.Id,
                     p => p.Name,
                     p => p.ChainId)
-                .County.Select(
+                .Countries.Select(
                     c => c.Id,
                     c => c.Name);
 
-            propertySelection.City.Select(v => v.Name).Areas.SelectAll();
+            propertySelection.Cities.Select(v => v.Name).Areas.SelectAll();
 
             var gqle = builder.ToGraphQL();
             gqle.ShouldNotBeNullOrEmpty();
@@ -89,6 +89,8 @@ namespace Soursop.GraphQL.Gen.Core.Tests
             var b = new TypeQueryBuilder();
 
             b.Type.Select(t => t.Name, t => t.Description);
+
+            b.Type.Fields.Select(f => f.Name);
             
 
             var gql = b.ToGraphQL();
