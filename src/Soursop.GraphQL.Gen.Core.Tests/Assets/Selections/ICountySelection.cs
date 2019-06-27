@@ -2,12 +2,11 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Soursop.GraphQL.Gen.Core.Tests.Assets
+namespace Soursop.GraphQL.Gen.Core.Tests.Assets.Selections
 {
-    public interface ICitySelection
-    {
+    public interface ICountySelection
+    {	
         int Id { get; }
         string Name { get; }
     }
-
 }

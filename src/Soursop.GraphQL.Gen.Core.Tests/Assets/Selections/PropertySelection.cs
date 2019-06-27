@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
+using Soursop.GraphQL.Gen.Core.Tests.Assets.Selections;
 
 namespace Soursop.GraphQL.Gen.Core.Tests.Assets
 {
@@ -28,15 +29,6 @@ namespace Soursop.GraphQL.Gen.Core.Tests.Assets
         protected override string SelectionName => "Property";
         protected override bool TryGetJsonPropertyName(string name, out string jsonName) => _mapping.TryGetValue(name, out jsonName);
         protected override string ArgumentList => "propertyId: $propertyId";
-	
-        protected override IEnumerable<Selection> SubSelections 
-        {
-            get 
-            {
-                yield return City;	
-                yield return County;	
-            }
-        }
 	
         public CitySelection City { get; }
         public CountySelection County { get; }

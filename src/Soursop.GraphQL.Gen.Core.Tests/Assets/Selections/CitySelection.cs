@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq.Expressions;
 
-namespace Soursop.GraphQL.Gen.Core.Tests.Assets
+namespace Soursop.GraphQL.Gen.Core.Tests.Assets.Selections
 {
     public class CitySelection : Selection<ICitySelection>, ICitySelection
     {
@@ -19,14 +19,6 @@ namespace Soursop.GraphQL.Gen.Core.Tests.Assets
         public CitySelection() 
         {
             Areas = new AreaSelection();
-        }
-
-        protected override IEnumerable<Selection> SubSelections
-        {
-            get
-            {
-                yield return Areas;
-            }
         }
 
         public AreaSelection Areas { get; }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Text;
 
-namespace Soursop.GraphQL.Gen.Core.Tests.Assets
+namespace Soursop.GraphQL.Gen.Core.Tests.Assets.Selections
 {
     public class CountySelection : Selection<ICountySelection>, ICountySelection
     {

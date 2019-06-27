@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Soursop.GraphQL.Gen.Core.Tests.Assets
+namespace Soursop.GraphQL.Gen.Core.Tests.Assets.Selections
 {
     public interface IPropertySelection
     {

@@ -4,6 +4,7 @@ using NUnit.Framework;
 using Shouldly;
 using Soursop.GraphQL.Gen.Core.Introspection;
 using Soursop.GraphQL.Gen.Core.Tests.Assets;
+using Soursop.GraphQL.Gen.Core.Tests.Assets.Selections;
 
 namespace Soursop.GraphQL.Gen.Core.Tests
 {

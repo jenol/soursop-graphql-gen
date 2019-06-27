@@ -17,4 +17,8 @@
     <ProjectReference Include="..\Soursop.GraphQL.Gen.Core\Soursop.GraphQL.Gen.Core.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Assets\Models\" />
+  </ItemGroup>
+
 </Project>

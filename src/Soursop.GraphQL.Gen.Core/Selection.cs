@@ -2,12 +2,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Reflection;
 using System.Text;
 
 namespace Soursop.GraphQL.Gen
 {
     public abstract class Selection
     {
+        private IEnumerable<Selection> _subSelections;
+
         protected Selection() 
         {
             SelectedProperties = new List<string>();
@@ -17,11 +20,19 @@ namespace Soursop.GraphQL.Gen
         protected abstract string SelectionName { get; }
         protected abstract bool TryGetJsonPropertyName(string name, out string jsonName);
 	
-        protected virtual IEnumerable<Selection> SubSelections
+        protected IEnumerable<Selection> SubSelections
         {
             get
             {
-                yield break;
+                if (_subSelections == null)
+                {
+                    _subSelections = GetType().GetProperties()
+                        .Where(p => typeof(Selection).IsAssignableFrom(p.PropertyType))
+                        .Select(p => p.GetGetMethod().Invoke(this, BindingFlags.Instance, null, null, null) as Selection)
+                        .Where(s => s != null);
+                }
+
+                return _subSelections;
             }	
         }
 
@@ -87,8 +98,11 @@ namespace Soursop.GraphQL.Gen
                     continue;
                 }		
 			
-                var name = member.Name;
-                TryGetJsonPropertyName(member.Name, out name);
+                string name = null;
+                if (!TryGetJsonPropertyName(member.Name, out name))
+                {
+                    name = member.Name;
+                }
 
                 if (SelectedProperties.Contains(name)) 
                 {

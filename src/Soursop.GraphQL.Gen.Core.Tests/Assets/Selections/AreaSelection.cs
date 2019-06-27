@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq.Expressions;
 
-namespace Soursop.GraphQL.Gen.Core.Tests.Assets
+namespace Soursop.GraphQL.Gen.Core.Tests.Assets.Selections
 {
     public class AreaSelection : Selection<IAreaSelection>, IAreaSelection
     {
