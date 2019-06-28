@@ -1,12 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq.Expressions;
 using Soursop.GraphQL.Gen.Core.Tests.Assets.Models;
 using Soursop.GraphQL.Gen.Core.Tests.Assets.Selections;
 
 namespace Soursop.GraphQL.Gen.Core.Tests.Assets
 {
-    public class PropertySelector: Selector<Property, IPropertySelection>, IPropertySelection
+    public class PropertySelector: Selector<Property, IPropertySelector>, IPropertySelector
     {
         public PropertySelector() 
         {
@@ -20,12 +19,12 @@ namespace Soursop.GraphQL.Gen.Core.Tests.Assets
         public CitySelector Cities { get; }
         public CountySelector Countries { get; }
 
-        Selection<int> IPropertySelection.Id { get; }
-        Selection<string> IPropertySelection.Name  { get; }
-        Selection<string> IPropertySelection.FormerName  { get; }
-        Selection<int> IPropertySelection.ChainId  { get; }
-        Selection<float> IPropertySelection.StarRating  { get; }
+        Selection IPropertySelector.Id => (Selection) Selections["Id"];
+        Selection IPropertySelector.Name => (Selection) Selections["Name"];
+        Selection IPropertySelector.FormerName => (Selection) Selections["FormerName"];
+        Selection IPropertySelector.ChainId => (Selection) Selections["ChainId"];
+        Selection IPropertySelector.StarRating => (Selection) Selections["StarRating"];
 
-        public new PropertySelector Select(params Expression<Func<IPropertySelection, object>>[] expressions)  => (PropertySelector) base.Select(expressions);
+        public new PropertySelector Select(params Expression<Func<IPropertySelector, object>>[] expressions)  => (PropertySelector) base.Select(expressions);
     }
 }

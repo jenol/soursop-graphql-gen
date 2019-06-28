@@ -1,18 +1,20 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq.Expressions;
 using Soursop.GraphQL.Gen.Core.Tests.Assets.Models;
 
 namespace Soursop.GraphQL.Gen.Core.Tests.Assets.Selections
 {
-    public class CountySelector : Selector<Country, ICountySelection>, ICountySelection
+    public class CountySelector : Selector<Country, ICountySelector>, ICountySelector
     {
+        public CountySelector()
+        {
+        }
+
         protected override string SelectionName => "County";
 
-        Selection<int> ICountySelection.Id { get; }
+        Selection ICountySelector.Id => (Selection) Selections["Id"];
+        Selection ICountySelector.Name => (Selection) Selections["Name"];
 
-        Selection<string> ICountySelection.Name  { get; }
-	
-        public new CountySelector Select(params Expression<Func<ICountySelection, object>>[] expressions)  => (CountySelector)base.Select(expressions);
+        public new CountySelector Select(params Expression<Func<ICountySelector, object>>[] expressions)  => (CountySelector)base.Select(expressions);
     }
 }

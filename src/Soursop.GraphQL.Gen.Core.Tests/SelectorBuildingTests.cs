@@ -9,10 +9,10 @@ using Soursop.GraphQL.Gen.Core.Tests.Assets.Selections;
 namespace Soursop.GraphQL.Gen.Core.Tests
 {
     [TestFixture]
-    public class SelectionBuildingTests
+    public class SelectorBuildingTests
     {
-        [Test, TestCaseSource(nameof(GetSelectionTestCases))]
-        public void SelectionTests(string description, Selector selector, string[] expectedPropertyNames)
+        [Test, TestCaseSource(nameof(GetSelectorTestCases))]
+        public void SelectorTests(string description, Selector selector, string[] expectedPropertyNames)
         {
             selector.SelectedPropertyNames.Count().ShouldBe(expectedPropertyNames.Length);
 
@@ -23,7 +23,7 @@ namespace Soursop.GraphQL.Gen.Core.Tests
             }
         }
 
-        public static IEnumerable<object[]> GetSelectionTestCases()
+        public static IEnumerable<object[]> GetSelectorTestCases()
         {
             object[] GetTestCase(string description, Selector selection, params string[] expectedPropertyNames)
             {
@@ -85,7 +85,7 @@ namespace Soursop.GraphQL.Gen.Core.Tests
 
             // builder.Build(1).GetJsonRequest().Dump();	
             // builder.Build(2).GetJsonRequest().Dump(); 
-
+            /*
             var b = new TypeQueryBuilder();
 
             b.Type.Select(t => t.Name, t => t.Description);
@@ -94,7 +94,7 @@ namespace Soursop.GraphQL.Gen.Core.Tests
             
 
             var gql = b.ToGraphQL();
-            gql.ShouldNotBeNullOrEmpty();
+            gql.ShouldNotBeNullOrEmpty();*/
         }
 
     }

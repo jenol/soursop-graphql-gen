@@ -4,14 +4,17 @@ using Soursop.GraphQL.Gen.Core.Tests.Assets.Models;
 
 namespace Soursop.GraphQL.Gen.Core.Tests.Assets.Selections
 {
-    public class AreaSelector : Selector<Area, IAreaSelection>, IAreaSelection
+    public class AreaSelector : Selector<Area, IAreaSelector>, IAreaSelector
     {
+        public AreaSelector()
+        {
+        }
+
         protected override string SelectionName => "Areas";
 
-        Selection<int> IAreaSelection.Id { get; }
+        Selection IAreaSelector.Id => (Selection) Selections["Id"];
+        Selection IAreaSelector.Name => (Selection) Selections["Name"];
 
-        Selection<string> IAreaSelection.Name { get; }
-
-        public new AreaSelector Select(params Expression<Func<IAreaSelection, object>>[] expressions) => (AreaSelector)base.Select(expressions);
+        public new AreaSelector Select(params Expression<Func<IAreaSelector, object>>[] expressions) => (AreaSelector)base.Select(expressions);
     }
 }
