@@ -85,7 +85,7 @@ namespace Soursop.GraphQL.Gen.Core.Tests
 
             // builder.Build(1).GetJsonRequest().Dump();	
             // builder.Build(2).GetJsonRequest().Dump(); 
-            /*
+            
             var b = new TypeQueryBuilder();
 
             b.Type.Select(t => t.Name, t => t.Description);
@@ -94,7 +94,7 @@ namespace Soursop.GraphQL.Gen.Core.Tests
             
 
             var gql = b.ToGraphQL();
-            gql.ShouldNotBeNullOrEmpty();*/
+            gql.ShouldNotBeNullOrEmpty();
         }
 
     }

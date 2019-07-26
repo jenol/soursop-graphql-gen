@@ -14,9 +14,9 @@ namespace Soursop.GraphQL.Gen.Core
             _graphQL = new Lazy<string>(() => graphQL);
         }
 
-        public OperationBase(IOperationBuilder builder) 
+        protected OperationBase(IOperationBuilder builder) 
         {
-            _graphQL = new Lazy<string>(() => builder.ToGraphQL());
+            _graphQL = new Lazy<string>(builder.ToGraphQL);
         }
 
         protected string GraphQL => _graphQL.Value;

@@ -52,15 +52,11 @@ namespace Soursop.GraphQL.Gen
         {
             get
             {
-                if (_subSelections == null)
-                {
-                    _subSelections = GetType().GetProperties()
-                        .Where(p => typeof(Selector).IsAssignableFrom(p.PropertyType))
-                        .Select(p => p.GetGetMethod().Invoke(this, BindingFlags.Instance, null, null, null) as Selector)
-                        .Where(s => s != null);
-                }
-
-                return _subSelections;
+                return _subSelections ?? (_subSelections = GetType().GetProperties()
+                           .Where(p => typeof(Selector).IsAssignableFrom(p.PropertyType))
+                           .Select(p =>
+                               p.GetGetMethod().Invoke(this, BindingFlags.Instance, null, null, null) as Selector)
+                           .Where(s => s != null));
             }	
         }
 
@@ -72,15 +68,10 @@ namespace Soursop.GraphQL.Gen
         {
             var builder = new StringBuilder();
 
-            if (string.IsNullOrWhiteSpace(ArgumentList))
-            {
-                builder.AppendLine(SelectionName);
-            }
-            else
-            {
-                builder.AppendLine($"{SelectionName}({ArgumentList})");
-            }
-		
+            builder.AppendLine(string.IsNullOrWhiteSpace(ArgumentList)
+                ? SelectionName
+                : $"{SelectionName}({ArgumentList})");
+
             builder.AppendLine("{");
 		
             foreach (var name in SelectedProperties)
@@ -114,12 +105,7 @@ namespace Soursop.GraphQL.Gen
         {
             var jsonPropertyAttribute = propertyInfo.GetCustomAttribute<JsonPropertyAttribute>();
 
-            if (jsonPropertyAttribute == null)
-            {
-                return propertyInfo.Name;
-            }
-
-            return jsonPropertyAttribute.PropertyName;
+            return jsonPropertyAttribute == null ? propertyInfo.Name : jsonPropertyAttribute.PropertyName;
         }
 
         protected sealed override bool TryGetJsonPropertyName(string name, out string jsonName)
@@ -136,7 +122,7 @@ namespace Soursop.GraphQL.Gen
                 if (member == null)
                 {
                     var unary = (expression.Body as UnaryExpression)?.Operand;
-                    member = unary == null ? null : (unary as MemberExpression)?.Member;
+                    member = (unary as MemberExpression)?.Member;
                 }		
 			
                 if (member == null)
@@ -148,10 +134,8 @@ namespace Soursop.GraphQL.Gen
                 {
                     selection.IsSelected = true;
                 }
-			
-                string name = null;
 
-                if (!TryGetJsonPropertyName(member.Name, out name))
+                if (!TryGetJsonPropertyName(member.Name, out var name))
                 {
                     name = member.Name;
                 }
