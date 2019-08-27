@@ -19,9 +19,9 @@ namespace Soursop.GraphQL.Gen.Core.Introspection
             get { yield return Type; }
         }
 
-        protected override IEnumerable<InputValue> Variables 
+        protected override IEnumerable<Variable> Variables 
         {
-            get { yield return new InputValue{ Name = "name", TypeName = "String!" }; }
+            get { yield return new Variable{ Name = "name", Type = GraphQLTypes.String, IsRequired = true }; }
         }
     }
 }

@@ -21,7 +21,7 @@ namespace Soursop.GraphQL.Gen.Core
 
         protected string GraphQL => _graphQL.Value;
 
-        public abstract IEnumerable<InputValue> Variables { get; }
+        public abstract IEnumerable<Variable> Variables { get; }
 
         public string GetJsonRequest()
         {

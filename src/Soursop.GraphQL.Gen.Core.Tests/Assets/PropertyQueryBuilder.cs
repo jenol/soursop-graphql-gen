@@ -17,9 +17,9 @@ namespace Soursop.GraphQL.Gen.Core.Tests.Assets
             return new PropertyQuery(ToGraphQL(), propertyId);
         }
 
-        protected override IEnumerable<InputValue> Variables
+        protected override IEnumerable<Variable> Variables
         {
-            get { yield return new InputValue {Name = "propertyId", TypeName = "Int!" }; }
+            get { yield return new Variable {Name = "propertyId", Type = GraphQLTypes.Int, IsRequired = true }; }
         }
 
         protected override IEnumerable<Selector> Selections
