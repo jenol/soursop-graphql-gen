@@ -14,12 +14,11 @@ namespace Soursop.GraphQL.Gen.Core.Tests
         [Test, TestCaseSource(nameof(GetSelectorTestCases))]
         public void SelectorTests(string description, Selector selector, string[] expectedPropertyNames)
         {
-            selector.SelectedPropertyNames.Count().ShouldBe(expectedPropertyNames.Length);
+            selector.SelectedProperties.Count().ShouldBe(expectedPropertyNames.Length);
 
-            var selectedNames = selector.SelectedPropertyNames.ToArray();
-            for (int i = 0; i < selectedNames.Length; i++)
+            foreach (var pair in selector.SelectedProperties)
             {
-                selectedNames[i].ShouldBe(expectedPropertyNames[i]);
+                expectedPropertyNames.Any(p => p == pair.Value.JsonName).ShouldBeTrue();
             }
         }
 

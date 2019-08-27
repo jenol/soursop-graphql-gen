@@ -16,8 +16,10 @@ namespace Soursop.GraphQL.Gen
 
         protected Selector() 
         {
-            SelectedProperties = new List<string>();
+            SelectedProperties = new Dictionary<string, PropertyMappingInfo>();
         }
+
+        protected abstract Dictionary<string, PropertyMappingInfo> PropertyInfoMapping { get; }
 
         protected Dictionary<string, ISelection> Selections
         {
@@ -44,7 +46,7 @@ namespace Soursop.GraphQL.Gen
             }
         }
 
-        protected List<string> SelectedProperties { get; }	
+        public Dictionary<string, PropertyMappingInfo> SelectedProperties { get; }	
         protected abstract string SelectionName { get; }
         protected abstract bool TryGetJsonPropertyName(string name, out string jsonName);
 	
@@ -60,8 +62,6 @@ namespace Soursop.GraphQL.Gen
             }	
         }
 
-        public IEnumerable<string> SelectedPropertyNames => SelectedProperties;
-	
         protected virtual string ArgumentList => "";
 
         internal string ToGraphQL() 
@@ -74,9 +74,9 @@ namespace Soursop.GraphQL.Gen
 
             builder.AppendLine("{");
 		
-            foreach (var name in SelectedProperties)
+            foreach (var property in SelectedProperties)
             {
-                builder.AppendLine($"   {name}");
+                builder.AppendLine($"   {property.Value.JsonName}");
             }
 		
             foreach (var subSelection in SubSelections)
@@ -87,80 +87,6 @@ namespace Soursop.GraphQL.Gen
             builder.AppendLine("}");
 		
             return builder.ToString();
-        }
-    }
-
-    public abstract class Selector<TModel, TSelector>: Selector
-    {
-        private static readonly Dictionary<string, string> _propertyNamesLookup;
-
-        static Selector()
-        {
-            var properties = typeof(TModel).GetProperties(BindingFlags.Instance | BindingFlags.Public).ToArray();
-            _propertyNamesLookup = properties
-                .ToDictionary(p => p.Name, p => GetJsonName(p));
-        }
-
-        private static string GetJsonName(PropertyInfo propertyInfo)
-        {
-            var jsonPropertyAttribute = propertyInfo.GetCustomAttribute<JsonPropertyAttribute>();
-
-            return jsonPropertyAttribute == null ? propertyInfo.Name : jsonPropertyAttribute.PropertyName;
-        }
-
-        protected sealed override bool TryGetJsonPropertyName(string name, out string jsonName)
-        {
-            return _propertyNamesLookup.TryGetValue(name, out jsonName);
-        }
-
-        protected Selector<TModel, TSelector> Select(params Expression<Func<TSelector, object>>[] expressions)
-        {
-            foreach (var expression in expressions)
-            {
-                var member = (expression.Body as MemberExpression)?.Member;
-
-                if (member == null)
-                {
-                    var unary = (expression.Body as UnaryExpression)?.Operand;
-                    member = (unary as MemberExpression)?.Member;
-                }		
-			
-                if (member == null)
-                {
-                    continue;
-                }
-
-                if (Selections.TryGetValue(member.Name, out var selection))
-                {
-                    selection.IsSelected = true;
-                }
-
-                if (!TryGetJsonPropertyName(member.Name, out var name))
-                {
-                    name = member.Name;
-                }
-
-                if (SelectedProperties.Contains(name)) 
-                {
-                    continue;	
-                }
-			
-                SelectedProperties.Add(name);
-            }			
-		
-            return this;
-        }
-
-        public Selector<TModel, TSelector> SelectAll() 
-        {
-            Clear().SelectedProperties.AddRange(_propertyNamesLookup.Values);
-            return this;
-        }
-
-        public Selector<TModel, TSelector> Clear() 
-        {
-            SelectedProperties.Clear();
-            return this;
         }
     }
 }
